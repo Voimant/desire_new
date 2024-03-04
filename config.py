@@ -1,0 +1,2 @@
+TOKEN = '6669168583:AAGkqen_z5lMJpbq_jcboQOVAvFuOAnfEus'
+# TOKEN = '6213720441:AAGtqMjCiSAJjumcAlDgfM0N4DW9kidlcDg'

@@ -1,0 +1,8 @@
+.idea
+__pycache__
+/venv
+/.venv
+/.venv_desiro
+/source/__pycache__
+/acquaintances_db/__pycache__
+
