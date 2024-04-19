@@ -1,6 +1,6 @@
 import psycopg2
 
-with psycopg2.connect(database="acquaintances_db", user="voimant", password="voimant11") as conn:
+with psycopg2.connect(database="acquaintances_db", user="root", password="X7cGDF6Q8yqjYbBg") as conn:
     with conn.cursor() as cur:
         def delete_db():
             """
@@ -57,12 +57,12 @@ with psycopg2.connect(database="acquaintances_db", user="voimant", password="voi
                 """)
             return 'База данных создана'
 
-        #print(create_db())
+       # print(create_db())
         conn.commit()
         def add_column():
              cur.execute("""ALTER TABLE users ADD COLUMN preferences_age INTEGER""")
              return 'Столбец preferences_age добавлен'
         #
         #
-        #print(add_column())
-        #conn.commit()
+       # print(add_column())
+       # conn.commit()
