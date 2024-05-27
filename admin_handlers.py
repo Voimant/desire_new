@@ -7,7 +7,7 @@ from aiogram.types import FSInputFile
 from pprint import pprint
 from aiogram.fsm.context import FSMContext
 from aiogram.filters.state import State, StatesGroup
-from create_bot import bot, dp
+
 
 class Fsm1(StatesGroup):
     message_all = State()

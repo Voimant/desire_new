@@ -556,4 +556,4 @@ def report():
      about_me, preferences, city, preferences_age FROM acquaintances_db""", conn)
     file.to_excel('report.xlsx', index=False)
     return 'информация успешно записана в файл exel'
-print(report())
+# print(report())
