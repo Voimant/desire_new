@@ -23,7 +23,7 @@ from source.reports import get_log_errors
 import config
 
 bot = Bot(token=config.TOKEN)
-admin_list = [634112358, 6192099919, 5923668994]
+admin_list = [634112358, 6192099919, 5923668994, 423947942]
 router = Router()
 router.message.middleware(AuthoMiddlware())
 router.callback_query.middleware(AuthoMiddlware())
