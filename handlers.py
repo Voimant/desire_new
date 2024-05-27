@@ -23,7 +23,7 @@ from source.reports import get_log_errors
 import config
 
 bot = Bot(token=config.TOKEN)
-
+admin_list = [634112358, 6192099919, 5923668994]
 router = Router()
 router.message.middleware(AuthoMiddlware())
 router.callback_query.middleware(AuthoMiddlware())
@@ -708,7 +708,10 @@ async def sends_all(callback: types.CallbackQuery, state: FSMContext):
 @router.message(Command('rt'))
 async def get_rt_report(mess: Message, state: FSMContext):
     await state.clear()
-    report()
-    await asyncio.sleep(3)
-    file = FSInputFile('report.xlsx')
-    await mess.answer_document(file, caption='Анкеты скачаны')
+    if mess.from_user.id in admin_list:
+        report()
+        await asyncio.sleep(3)
+        file = FSInputFile('report.xlsx')
+        await mess.answer_document(file, caption='Анкеты скачаны')
+    else:
+        await mess.answer('Вы не являетесь администратором')
