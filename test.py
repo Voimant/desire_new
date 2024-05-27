@@ -8,3 +8,4 @@ elif type(int(str_num)) == int:
     print("работает перевод буквоцифры")
 else:
     print('вообще не цифры')
+

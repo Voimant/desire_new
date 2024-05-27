@@ -550,3 +550,10 @@ def list_id():
 
 
 #print(list_id())
+
+def report():
+    file = pd.read_sql("""SELECT username, nick_name, age, gender,
+     about_me, preferences, city, preferences_age FROM acquaintances_db""", conn)
+    file.to_excel('report.xlsx', index=False)
+    return 'информация успешно записана в файл exel'
+print(report())
