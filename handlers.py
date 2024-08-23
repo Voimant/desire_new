@@ -765,7 +765,6 @@ async def get_rt_report(mess: Message, state: FSMContext):
     await state.clear()
     if mess.from_user.id in admin_list:
         report()
-        await asyncio.sleep(3)
         file = FSInputFile('report.xlsx')
         await mess.answer_document(file, caption='Анкеты скачаны')
     else:
