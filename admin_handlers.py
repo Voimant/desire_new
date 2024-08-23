@@ -1,22 +1,22 @@
-from aiogram import types, Dispatcher, Router, F
-from aiogram.filters import CommandStart, Command
-from aiogram.types import Message
-from keyboards import main_keyboard, profile_markup, start_profile_markup, next_back_kb_markup, search_profile_markup
-from keyboards import search_begin_markup
-from aiogram.types import FSInputFile
-from pprint import pprint
-from aiogram.fsm.context import FSMContext
-from aiogram.filters.state import State, StatesGroup
-
-
-class Fsm1(StatesGroup):
-    message_all = State()
-    image_al = State()
-    resl = State()
-
-
-
-
+# from aiogram import types, Dispatcher, Router, F
+# from aiogram.filters import CommandStart, Command
+# from aiogram.types import Message
+# from keyboards import main_keyboard, profile_markup, start_profile_markup, next_back_kb_markup, search_profile_markup
+# from keyboards import search_begin_markup
+# from aiogram.types import FSInputFile
+# from pprint import pprint
+# from aiogram.fsm.context import FSMContext
+# from aiogram.filters.state import State, StatesGroup
+#
+#
+# class Fsm1(StatesGroup):
+#     message_all = State()
+#     image_al = State()
+#     resl = State()
+#
+#
+#
+#
 # async def admin(message: types.Message):
 #     await message.answer('Введите пароль:',)
 #

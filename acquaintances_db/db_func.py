@@ -150,7 +150,14 @@ def delete_user(user_name: str):
 # us_name = 'Voimant'
 # print(delete_user(us_name))
 # conn.commit()
-
+def db_chat_id_user(user_name: str):
+    """чат ид по юзернам"""
+    with conn.cursor() as cur:
+        select_query = "select chat_id from users where user_name = '{}'".format(user_name)
+        cur.execute(select_query)
+        ret = cur.fetchone()
+        for row in ret:
+            return row
 
 #
 
@@ -204,7 +211,27 @@ def search3(age: int, preferences: str, gender: str):
     """
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute(
-            """SELECT user_name, nick_name, gender, age, about_me, preferences, city, photo, chat_id FROM users WHERE age BETWEEN (%s - 4) AND (%s + 4)
+            """SELECT user_name, nick_name, gender, age, about_me, preferences, city, photo, chat_id FROM users WHERE age BETWEEN (%s - 2) AND (%s + 19)
+            AND gender = %s AND preferences = %s""", (age, age, preferences, gender))
+        res = cur.fetchall()
+        res_list = []
+        for row in res:
+            res_list.append(dict(row))
+        return res_list
+
+
+def search4(age: int, preferences: str, gender: str):
+    """
+    Функция запроса по выводу анкеты подходящих по параматрам пользователей (имя пользователя, ник, пол, информация о себе,
+    его предпочтения, город, фото)
+    :param age: возраст искомого кандидата
+    :param preferences: пол искомого кандидата
+    :param gender: предпочтения искомого кандидата
+    :return: список словарей с подходящими кандтдатами
+    """
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        cur.execute(
+            """SELECT user_name, nick_name, gender, age, about_me, preferences, city, photo, chat_id FROM users WHERE age BETWEEN (%s - 0) AND (%s + 50)
             AND gender = %s AND preferences = %s""", (age, age, preferences, gender))
         res = cur.fetchall()
         res_list = []
@@ -557,3 +584,41 @@ def report():
     file.to_excel('report.xlsx', index=False)
     return 'информация успешно записана в файл exel'
 # print(report())
+
+def db_bun(username):
+    with conn.cursor() as cur:
+        update = "UPDATE users set bun = true where user_name = '{}'".format(str(username))
+        cur.execute(update)
+        conn.commit()
+        return 'Готово'
+
+#print(db_bun('VIP_DESIRE_1'))
+
+def db_rebun(username):
+    with conn.cursor() as cur:
+        update = "UPDATE users set bun = false where user_name = '{}'".format(str(username))
+        cur.execute(update)
+        conn.commit()
+        return 'Готово'
+
+#print(db_rebun('VIP_DESIRE_1'))
+
+
+def db_my_chat_id(user_name):
+    with conn.cursor() as cur:
+        select = "select chat_id from users where user_name = '{}'".format(user_name)
+        cur.execute(select)
+        ret = cur.fetchone()
+        for x in ret:
+            return x
+#print(db_my_chat_id('VIP_DESIRE_1'))
+
+
+def db_bun_users(user_name: str):
+    with conn.cursor() as cur:
+        select = "select user_name from users where bun = true and user_name = '{}'".format(user_name)
+        cur.execute(select)
+        ret = cur.fetchone()
+        return ret
+
+#print(db_bun_users('VIP_DESIRE_1'))
