@@ -814,7 +814,7 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /u - разблокировать пользователя\n'
                               '/report - скачать отчет')
     await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
-    delete_user(user_block)
+    delete_user(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
 
@@ -861,7 +861,7 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     await bot.send_message(int(chat_id_bun), f"Сожалеем, но вы заблокированы админом, для разблокировки обратитесь: @vip_desire_chats\n"
                                              f"Причина блокировки:\n"
                                              f"\n{data['mess_user']}", reply_markup=main_keyboard)
-    db_bun(user_block)
+    db_bun(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
 
@@ -905,6 +905,6 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /u - разблокировать пользователя\n'
                               '/report - скачать отчет')
     await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
-    db_rebun(user_block)
+    db_rebun(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
