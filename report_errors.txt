@@ -2838,3 +2838,233 @@ list index out of range --------2024-08-16
 'user_name' --------2024-08-16
 list index out of range --------2024-08-16
 list index out of range --------2024-08-16
+list index out of range --------2024-08-16
+'user_name' --------2024-08-16
+list index out of range --------2024-08-16
+'user_name' --------2024-08-16
+'user_name' --------2024-08-16
+list index out of range --------2024-08-16
+list index out of range --------2024-08-16
+'user_name' --------2024-08-16
+'user_name' --------2024-08-17
+'user_name' --------2024-08-17
+'user_name' --------2024-08-17
+list index out of range --------2024-08-17
+'user_name' --------2024-08-17
+list index out of range --------2024-08-17
+'user_name' --------2024-08-17
+'user_name' --------2024-08-17
+'user_name' --------2024-08-17
+'user_name' --------2024-08-17
+'user_name' --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+'user_name' --------2024-08-18
+'user_name' --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+'user_name' --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+list index out of range --------2024-08-18
+'user_name' --------2024-08-18
+invalid literal for int() with base 10: 'Перейти в наш чат' --------2024-08-18
+invalid literal for int() with base 10: 'Перейти в наш чат' --------2024-08-18
+'user_name' --------2024-08-18
+'user_name' --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+'user_name' --------2024-08-19
+'user_name' --------2024-08-19
+'user_name' --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+'user_name' --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+'user_name' --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+'user_name' --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+'user_name' --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+'user_name' --------2024-08-19
+list index out of range --------2024-08-19
+list index out of range --------2024-08-19
+'user_name' --------2024-08-20
+list index out of range --------2024-08-20
+invalid literal for int() with base 10: 'Net' --------2024-08-20
+list index out of range --------2024-08-20
+'user_name' --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+'user_name' --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+'user_name' --------2024-08-20
+'user_name' --------2024-08-20
+'user_name' --------2024-08-20
+'user_name' --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+list index out of range --------2024-08-20
+'user_name' --------2024-08-20
+'user_name' --------2024-08-20
+list index out of range --------2024-08-20
+'user_name' --------2024-08-20
+list index out of range --------2024-08-21
+'user_name' --------2024-08-21
+list index out of range --------2024-08-21
+list index out of range --------2024-08-21
+list index out of range --------2024-08-21
+'user_name' --------2024-08-21
+list index out of range --------2024-08-21
+invalid literal for int() with base 10: 'Помощь' --------2024-08-21
+invalid literal for int() with base 10: 'Помощь' --------2024-08-21
+invalid literal for int() with base 10: 'Помощь' --------2024-08-21
+invalid literal for int() with base 10: 'Помощь' --------2024-08-21
+invalid literal for int() with base 10: 'Помощь' --------2024-08-21
+invalid literal for int() with base 10: 'Перейти в наш чат' --------2024-08-21
+invalid literal for int() with base 10: 'Перейти в наш чат' --------2024-08-21
+invalid literal for int() with base 10: 'Помощь' --------2024-08-21
+invalid literal for int() with base 10: 'Перейти в наш чат' --------2024-08-21
+invalid literal for int() with base 10: '38 лет' --------2024-08-21
+'user_name' --------2024-08-21
+list index out of range --------2024-08-21
+'user_name' --------2024-08-21
+list index out of range --------2024-08-21
+list index out of range --------2024-08-21
+list index out of range --------2024-08-21
+'user_name' --------2024-08-21
+'user_name' --------2024-08-21
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+invalid literal for int() with base 10: '21 и 29' --------2024-08-22
+invalid literal for int() with base 10: '40/35' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+invalid literal for int() with base 10: '43,40' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+invalid literal for int() with base 10: 'Помощь' --------2024-08-22
+'user_name' --------2024-08-22
+invalid literal for int() with base 10: '22 и 19' --------2024-08-22
+'user_name' --------2024-08-22
+invalid literal for int() with base 10: '34 и 40' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+invalid literal for int() with base 10: '38 и 37' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+invalid literal for int() with base 10: '22 и 27' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+invalid literal for int() with base 10: '45-35' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-22
+list index out of range --------2024-08-22
+'user_name' --------2024-08-22
+list index out of range --------2024-08-23
+'user_name' --------2024-08-23
+'user_name' --------2024-08-23
+list index out of range --------2024-08-23
