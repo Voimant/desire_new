@@ -16,6 +16,7 @@ class AuthoMiddlware(BaseMiddleware):
         x = 0
         username = event.from_user.username
         bun = db_bun_users(str(username))
+        print(bun)
 
         if username is None:
             await event.answer(text='Пожалуйста создайте имя пользователя в вашем телеграмм аккаунте,'

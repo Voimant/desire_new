@@ -619,7 +619,11 @@ def db_bun_users(user_name: str):
         select = "select bun from users where bun = true and user_name = '{}'".format(user_name)
         cur.execute(select)
         ret = cur.fetchone()
-        for x in ret:
-            return x
+        try:
+            for x in ret:
+                return x
+        except Exception as e:
+            print(e)
+            return False
 
 print(db_bun_users('VIP_DESIRE_1'))
