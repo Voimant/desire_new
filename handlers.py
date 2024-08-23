@@ -66,14 +66,24 @@ async def cmd_start(message: types.Message, state: FSMContext):
 async def cmd_my_profile(message: types.Message):
     us_name = message.from_user.username
     info = my_anketa(us_name)
-    o_output = (f'Ваша анкета\n'
-                f'Имя: {info[0]["nick_name"]} {info[0]["gender"]}\n'
-                f'Возраст: {info[0]["age"]}\n'
-                f'О себе: {info[0]["about_me"]}\n'
-                f'Кого ищу: {info[0]["preferences"]}\n'
-                f'Город: {info[0]["city"]}\n'
-                f'Предпочитаемый возраст: {int(info[0]["preferences_age"]) - 4} - {int(info[0]["preferences_age"]) + 4}')
-    await bot.send_photo(message.chat.id, info[0]['photo'], caption=o_output, reply_markup=edit_profile_markup)
+    if int(info[0]["preferences_age"]) == 20:
+        o_output = (f'Ваша анкета\n'
+                    f'Имя: {info[0]["nick_name"]} {info[0]["gender"]}\n'
+                    f'Возраст: {info[0]["age"]}\n'
+                    f'О себе: {info[0]["about_me"]}\n'
+                    f'Кого ищу: {info[0]["preferences"]}\n'
+                    f'Город: {info[0]["city"]}\n'
+                    f'Предпочитаемый возраст: 18-40')
+        await bot.send_photo(message.chat.id, info[0]['photo'], caption=o_output, reply_markup=edit_profile_markup)
+    elif int(info[0]["preferences_age"]) != 20:
+        o_output = (f'Ваша анкета\n'
+                    f'Имя: {info[0]["nick_name"]} {info[0]["gender"]}\n'
+                    f'Возраст: {info[0]["age"]}\n'
+                    f'О себе: {info[0]["about_me"]}\n'
+                    f'Кого ищу: {info[0]["preferences"]}\n'
+                    f'Город: {info[0]["city"]}\n'
+                    f'Предпочитаемый возраст: 40+')
+        await bot.send_photo(message.chat.id, info[0]['photo'], caption=o_output, reply_markup=edit_profile_markup)
 
 
 @router.callback_query(F.data == 'edit_profile')
