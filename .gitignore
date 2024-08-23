@@ -5,4 +5,5 @@ __pycache__
 /.venv_desiro
 /source/__pycache__
 /acquaintances_db/__pycache__
+env
 

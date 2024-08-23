@@ -1,10 +1,9 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 
 main_button = [[
-                KeyboardButton(text='Помощь'),
-                KeyboardButton(text='Перейти в наш чат')]]
+    KeyboardButton(text='Помощь'),
+    KeyboardButton(text='Перейти в наш чат')]]
 main_keyboard = ReplyKeyboardMarkup(keyboard=main_button, resize_keyboard=True)
-
 
 profile_kb_1 = [[InlineKeyboardButton(text='тест колбека', callback_data='hi')]]
 profile_markup = InlineKeyboardMarkup(inline_keyboard=profile_kb_1)
@@ -12,8 +11,7 @@ profile_markup = InlineKeyboardMarkup(inline_keyboard=profile_kb_1)
 start_profile_button = [[
     InlineKeyboardButton(text='Мужчина 🙎‍♂', callback_data='🙎‍♂️️️'),
     InlineKeyboardButton(text='Девушка 🙍‍♀️', callback_data='🙍‍♀️'),
-    InlineKeyboardButton(text='Пара 🙍‍♀️🙎‍♂️', callback_data='🙍‍♀️🙎‍♂️'),
-    InlineKeyboardButton(text='Назад', callback_data='back')
+    InlineKeyboardButton(text='Пара 🙍‍♀️🙎‍♂️', callback_data='🙍‍♀️🙎‍♂️')
 ]]
 
 start_profile_button_1 = [[
@@ -37,13 +35,18 @@ search_begin = [[
     InlineKeyboardButton(text="Начать поиск❤️", callback_data='go')
 ]]
 
-city_button = [[
-    InlineKeyboardButton(text='Москва', callback_data='Москва')
-]]
+city_button = [
+    [InlineKeyboardButton(text='Москва', callback_data='Москва')],
+    [InlineKeyboardButton(text='Санкт-Петербург', callback_data='Санкт-Петербург')],
+    [InlineKeyboardButton(text='Юг России', callback_data='Юг России')],
+    [InlineKeyboardButton(text='Сибирь', callback_data='Сибирь')],
+    [InlineKeyboardButton(text='Урал', callback_data='Урал')],
+    [InlineKeyboardButton(text='Дальний Восток и Камчатка', callback_data='Дальний Восток и Камчатка')],
+    [InlineKeyboardButton(text='Другой', callback_data='Другой')]
+]
 
 no_new_profile = [[InlineKeyboardButton(text='Перейти в наш чат', url='https://t.me/+fJvilb1aY1NiMjRi'),
                    InlineKeyboardButton(text='Поcмотреть заново', callback_data='go_again')]]
-
 
 admin_keyboards = [[InlineKeyboardButton(text='Рассылка', callback_data='send'),
                     InlineKeyboardButton(text='Отмена', callback_data='canc')]]
@@ -75,14 +78,9 @@ admin_1_button = [[
 admin_1_markup = InlineKeyboardMarkup(inline_keyboard=admin_1_button)
 
 age_button = [
-    [InlineKeyboardButton(text='18-26', callback_data='22'),
-    InlineKeyboardButton(text='27-34', callback_data='30'),
-    InlineKeyboardButton(text='35-43', callback_data='39'),
-    InlineKeyboardButton(text='44-51', callback_data='48')],
-    [InlineKeyboardButton(text='52-59', callback_data='56'),
-    InlineKeyboardButton(text='60-67', callback_data='63'),
-    InlineKeyboardButton(text='68-75', callback_data='71'),
-    InlineKeyboardButton(text='76-83', callback_data='79')]
+    [InlineKeyboardButton(text='18-40', callback_data='20'),
+     InlineKeyboardButton(text='40+', callback_data='40'), ]
+
 ]
 age_markup = InlineKeyboardMarkup(inline_keyboard=age_button)
 edit_pro_cancel = [[InlineKeyboardButton(text='Назад', callback_data='cancell')]]
@@ -97,3 +95,13 @@ next_back_kb_markup = InlineKeyboardMarkup(inline_keyboard=next_back_kb)
 start_profile_markup = InlineKeyboardMarkup(inline_keyboard=start_profile_button)
 search_profile_markup = InlineKeyboardMarkup(inline_keyboard=search_profile)
 search_begin_markup = InlineKeyboardMarkup(inline_keyboard=search_begin)
+
+cancel_button = [[InlineKeyboardButton(text="Отмена", callback_data='cancel')]]
+cancel_markup = InlineKeyboardMarkup(inline_keyboard=cancel_button)
+
+key_button = [
+    [InlineKeyboardButton(text='Отправить', callback_data='bun_bun')],
+    [InlineKeyboardButton(text="Отмена", callback_data='cancel')]
+]
+
+key_markup = InlineKeyboardMarkup(inline_keyboard=key_button)

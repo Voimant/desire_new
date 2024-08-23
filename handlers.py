@@ -4,10 +4,10 @@ import time
 from aiogram import types, Dispatcher, Router, F, Bot
 from aiogram.exceptions import TelegramForbiddenError
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from keyboards import main_keyboard, profile_markup, start_profile_markup, next_back_kb_markup, search_profile_markup, \
     city_markup, again_markup, start_profile_markup_1, edit_profile_markup, edit_pro_markup, edit_pro_cancel, \
-    edit_pro_cancel_markup, age_markup, admin_markup, admin_1_markup
+    edit_pro_cancel_markup, age_markup, admin_markup, admin_1_markup, cancel_markup, key_markup
 from keyboards import search_begin_markup
 from aiogram.types import FSInputFile, BufferedInputFile
 from pprint import pprint
@@ -16,7 +16,7 @@ from aiogram.filters.state import State, StatesGroup
 from acquaintances_db.db_func import add_user, search, search3, liked, not_liked, update_user_index, search_user, \
     my_anketa, update_index, list_liked_users, list_not_liked_users, update_user_data, update_nick_name, update_age, \
     update_gender, update_photo, update_about_me, update_preferences, update_city, update_preferences_age, list_id, \
-    report
+    report, delete_user, db_bun, db_chat_id_user, db_rebun
 from acquaintances_db.db import conn
 from middleware import AuthoMiddlware
 from source.reports import get_log_errors
@@ -38,6 +38,13 @@ class FSMprofile(StatesGroup):
     search_profile = State()
     city = State()
     age_seach_s = State()
+
+
+@router.callback_query(F.data == 'cancel')
+async def get_cancel(call: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await call.message.answer('Начнем поиск?', reply_markup=search_begin_markup)
+
 
 
 @router.message(Command('start'))
@@ -141,7 +148,7 @@ async def search_city(call: types.CallbackQuery, state: FSMContext):
 
 @router.callback_query(FSMprofile.city)
 async def age_seach(call: types.CallbackQuery, state: FSMContext):
-    if call.data in ['Москва']:
+    if call.data in ['Москва', 'Санкт-Петербург', 'Юг России', 'Сибирь', 'Урал', 'Дальний Восток и Камчатка', 'Другой']:
         await state.update_data(city=call.data)
         await bot.send_message(call.from_user.id, "Выберете возраст который будем искать", reply_markup=age_markup)
         await state.set_state(FSMprofile.age_seach_s)
@@ -153,47 +160,77 @@ async def age_seach(call: types.CallbackQuery, state: FSMContext):
 @router.callback_query(FSMprofile.age_seach_s)
 async def ready_profile(call: types.CallbackQuery, state: FSMContext):
     """Функция записи нового пользователя в базу"""
-    if int(call.data) in [22, 30, 39, 48, 56, 63, 71, 79]:
+    if int(call.data) in [20, 40]:
         try:
             int(call.data)
+            await state.update_data(age_seach_s=call.data)
+            data = await state.get_data()
+            username = call.from_user.username
+            await bot.send_message(call.from_user.id, 'что то пошло не так', reply_markup=age_markup)
+            await state.set_state(FSMprofile.age_seach_s)
+            dataage = int(call.data)
+            ret = (add_user(username, call.from_user.id, data['name'], data['age'], data['sex'], data['photo'],
+                            data['text_profile'], data['search_profile'], data['city'], 0, dataage))
+            conn.commit()
+            print(ret)
+            if ret == 'Пользователь с таким user_name уже есть в базе':
+                await bot.send_message(call.from_user.id, 'пользователь уже есть в базе')
+            else:
+                update_user_data(data['name'], data['age'], data['sex'], data['photo'], data['text_profile'],
+                                 data['search_profile'], data['city'], data['age_seach_s'], username)
+                conn.commit()
+                print(ret)
+            if int(data["age_seach_s"]) == 20:
+                x = (f'Ваша анкета\n'
+                     f'Имя: {data["name"]} {data["sex"]}\n'
+                     f'Возраст: {data["age"]}\n'
+                     f'О себе: {data["text_profile"]}\n'
+                     f'Кого ищу: {data["search_profile"]}\n'
+                     f'Предпочитаю возраст: 18-40')
+                y = data['photo']
+                await bot.send_photo(call.from_user.id, y, caption=x, reply_markup=search_begin_markup)
+                admin_1 = (f'Новая анкета\n'
+                         f'@{call.from_user.username}\n'
+                         f'chat_id : {call.from_user.id}\n'
+                         f'Имя: {data["name"]} {data["sex"]}\n'
+                         f'Возраст: {data["age"]}\n'
+                         f'О себе: {data["text_profile"]}\n'
+                         f'Кого ищу: {data["search_profile"]}\n'
+                         f'Предпочитаю возраст: 40+')
+                await bot.send_photo(5923668994, photo=y, caption=admin_1)
+                await state.clear()
+            else:
+                if int(data["age_seach_s"]) == 40:
+                    x = (f'Ваша анкета\n'
+                         f'Имя: {data["name"]} {data["sex"]}\n'
+                         f'Возраст: {data["age"]}\n'
+                         f'О себе: {data["text_profile"]}\n'
+                         f'Кого ищу: {data["search_profile"]}\n'
+                         f'Предпочитаю возраст: 40+')
+                    y = data['photo']
+                    await bot.send_photo(call.from_user.id, y, caption=x, reply_markup=search_begin_markup)
+                    admin_1 = (f'Новая анкета\n'
+                             f'@{call.from_user.username}\n'
+                             f'chat_id : {call.from_user.id}\n'
+                         f'Имя: {data["name"]} {data["sex"]}\n'
+                         f'Возраст: {data["age"]}\n'
+                         f'О себе: {data["text_profile"]}\n'
+                         f'Кого ищу: {data["search_profile"]}\n'
+                         f'Предпочитаю возраст: 40+')
+                    await bot.send_photo(5923668994, photo=y, caption=admin_1)
+                    await state.clear()
         except ValueError:
             await bot.send_message(call.from_user.id, "Выберете возраст который будем искать", reply_markup=age_markup)
             await state.set_state(FSMprofile.age_seach_s)
     else:
         await call.message.answer('Что то пошло не так', reply_markup=main_keyboard)
         await state.clear()
-    await state.update_data(age_seach_s=call.data)
-    data = await state.get_data()
-    username = call.from_user.username
-    await bot.send_message(call.from_user.id, 'что то пошло не так', reply_markup=age_markup)
-    await state.set_state(FSMprofile.age_seach_s)
-    dataage = int(call.data)
-    ret = (add_user(username, call.from_user.id, data['name'], data['age'], data['sex'], data['photo'],
-                    data['text_profile'], data['search_profile'], data['city'], 0, dataage))
-    conn.commit()
-    print(ret)
-    if ret == 'Пользователь с таким user_name уже есть в базе':
-        await bot.send_message(call.from_user.id, 'пользователь уже есть в базе')
-    else:
-        update_user_data(data['name'], data['age'], data['sex'], data['photo'], data['text_profile'],
-                         data['search_profile'], data['city'], data['age_seach_s'], username)
-        conn.commit()
-        print(ret)
-    x = (f'Ваша анкета\n'
-         f'Имя: {data["name"]} {data["sex"]}\n'
-         f'Возраст: {data["age"]}\n'
-         f'О себе: {data["text_profile"]}\n'
-         f'Кого ищу: {data["search_profile"]}\n'
-         f'Предпочитаю возраст: {int(data["age_seach_s"]) - 4} - {int(data["age_seach_s"]) + 4}')
-    y = data['photo']
-    await bot.send_photo(call.from_user.id, y, caption=x, reply_markup=search_begin_markup)
-    await state.clear()
 
 
-@router.callback_query(F.data == 'hi')
-async def send_profile(call: types.CallbackQuery):
-    logo = FSInputFile(r'media/хатико.jpg')
-    await bot.send_photo(call.from_user.id, logo, caption='че то работает', reply_markup=profile_markup)
+# @router.callback_query(F.data == 'hi')
+# async def send_profile(call: types.CallbackQuery):
+#     logo = FSInputFile(r'media/хатико.jpg')
+#     await bot.send_photo(call.from_user.id, logo, caption='че то работает', reply_markup=profile_markup)
 
 
 @router.callback_query(F.data == 'back')
@@ -238,7 +275,6 @@ async def cancel(call: types.CallbackQuery, state: FSMContext):
 async def new_profile(call: types.callback_query):
     """начало поиска """
     username = call.from_user.username
-    print(username)
     result_search = search(username)
     gender = result_search[0]['gender']
     age = result_search[0]['preferences_age']
@@ -260,7 +296,7 @@ async def new_profile(call: types.callback_query):
         else:
             break
     result = search3(age, pref, gender)
-    print(result)
+    # print(result)
     try:
         x = f'Имя: {result[count]["nick_name"]} {result[count]["gender"]}\n'
         f'Возраст: {result[count]["age"]}\n'
@@ -292,10 +328,11 @@ async def like_do(call: types.callback_query):
             if result[count]['user_name'] in list_liked_users(us_name):
                 c_count = c_count + 1
                 continue
+            else:
+                break
         except Exception as e:
+            print(f'тут отрабатывает падла \n {e}')
             get_log_errors(e)
-            break
-        else:
             break
     try:
         liked(us_name, result[count]['user_name'])
@@ -311,25 +348,40 @@ async def like_do(call: types.callback_query):
 
         result = search3(age, pref, gender)
         like_user_name = result[count - 1]['user_name']
+        print(like_user_name)
         print(count)
+        print(list_liked_users(like_user_name))
         if us_name in list_liked_users(like_user_name):
             x = my_anketa(us_name)
             y = (f'Есть взаимная симпатия 👉🏻 @{us_name} Начинай общаться!  \n'
                  f'Имя: {x[0]["nick_name"]}\n'
                  f'О себе: {x[0]["about_me"]}\n'
                  f'Возраст: {x[0]["age"]}')
+            if len(result) > 1:
+                print('>1')
+                profile_like = (f'Есть взаимная симпатия 👉🏻 @{result[count - 1]["user_name"]} Начинай общаться!\n'
+                                f'Имя: {result[count - 1]["nick_name"]} {result[count]["gender"]}\n'
+                                f'Возраст: {result[count - 1]["age"]}\n'
+                                f'О себе: {result[count - 1]["about_me"]}')
 
-            profile_like = (f'Есть взаимная симпатия 👉🏻 @{result[count - 1]["user_name"]} Начинай общаться!\n'
-                            f'Имя: {result[count - 1]["nick_name"]} {result[count]["gender"]}\n'
-                            f'Возраст: {result[count - 1]["age"]}\n'
-                            f'О себе: {result[count - 1]["about_me"]}')
+                await bot.send_photo(result[count - 1]['chat_id'], x[0]['photo'], caption=y)
+                await bot.send_photo(call.from_user.id, photo=result[count - 1]["photo"], caption=profile_like,
+                                     reply_markup=main_keyboard)
+            else:
+                print('елсе')
+                print(result)
+                print(count)
+                profile_like = (f'Есть взаимная симпатия 👉🏻 @{result[0]["user_name"]} Начинай общаться!\n'
+                                f'Имя: {result[0]["nick_name"]} {result[0]["gender"]}\n'
+                                f'Возраст: {result[0]["age"]}\n'
+                                f'О себе: {result[0]["about_me"]}')
 
-            await bot.send_photo(result[count - 1]['chat_id'], x[0]['photo'], caption=y)
-            await bot.send_photo(call.from_user.id, photo=result[count - 1]["photo"], caption=profile_like,
-                                 reply_markup=main_keyboard)
-            print(list_liked_users(like_user_name))
+                await bot.send_photo(result[0]['chat_id'], x[0]['photo'], caption=y)
+                await bot.send_photo(call.from_user.id, photo=result[0]["photo"], caption=profile_like,
+                                     reply_markup=main_keyboard)
+            # print(list_liked_users(like_user_name))
         else:
-            newprofile1 = (f'Имя: {result[count]["nick_name"]}'
+            newprofile1 = (f'Имя: {result[count]["nick_name"]}\n'
                            f'Пол: {result[count]["gender"]}\n'
                            f'Возраст: {result[count]["age"]}\n'
                            f'О себе: {result[count]["about_me"]}')
@@ -339,7 +391,9 @@ async def like_do(call: types.callback_query):
         #     photos = "AgACAgIAAxkBAAIFe2UfsirjHLkRHmqocmNSZIphy4FfAAKXzjEb748BSeSusLw4RhVIAQADAgADeAADMAQ"
         #     await bot.send_photo(call.from_user.id, photos, caption=newprofile1, reply_markup=search_profile_markup)
 
-    except IndexError:
+    except IndexError as e:
+        print(e)
+        print('попал на индекс еррор')
         await bot.send_message(call.from_user.id, 'На сегодня анкеты закончились. Хотите пообщаться в нашем чате?',
                                reply_markup=again_markup)
     except TelegramForbiddenError:
@@ -363,7 +417,8 @@ async def like_not(call: types.callback_query):
             if result[count]['user_name'] in list_not_liked_users(us_name):
                 c_count = c_count + 1
                 continue
-        except:
+        except Exception as e:
+            print(e)
             break
         else:
             break
@@ -715,3 +770,142 @@ async def get_rt_report(mess: Message, state: FSMContext):
         await mess.answer_document(file, caption='Анкеты скачаны')
     else:
         await mess.answer('Вы не являетесь администратором')
+
+
+
+
+class Fsmoder(StatesGroup):
+    usern = State()
+    mess_user = State()
+    user_block = State()
+
+
+
+
+@router.message(Command("bun"))
+async def administrator(mess: Message, state: FSMContext):
+    await state.clear()
+    await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
+    await state.set_state(Fsmoder.usern)
+
+
+@router.message(Fsmoder.usern)
+async def admin_next(mess: Message, state: FSMContext):
+    await state.update_data(usern=mess.text)
+    await mess.answer('Введите сообщение пользователю',reply_markup=cancel_markup)
+    await state.set_state(Fsmoder.mess_user)
+
+
+@router.message(Fsmoder.mess_user)
+async def admin_text(mess: Message, state: FSMContext):
+    await state.update_data(mess_user=mess.text)
+    await mess.answer('Нажмите отправить для блокировки или отмена', reply_markup=key_markup)
+    await state.set_state(Fsmoder.user_block)
+
+
+@router.callback_query(Fsmoder.user_block)
+async def admin_block(call: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    user_block = data['usern']
+    chat_id_bun = db_chat_id_user(user_block.replace('@', ''))
+    await call.message.answer('Анкета гостя очищена!\n'
+                              ' Команды администратора:\n'
+                              ' /bun - удалить анкету\n'
+                              ' /block - заблокировать пользователя\n'
+                              ' /u - разблокировать пользователя\n'
+                              '/report - скачать отчет')
+    await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
+    delete_user(user_block)
+    conn.commit()
+    await state.clear()
+
+
+
+class Fsmbun(StatesGroup):
+    usern = State()
+    mess_user = State()
+    user_block = State()
+
+@router.message(Command("block"))
+async def administrator(mess: Message, state: FSMContext):
+    await state.clear()
+    await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
+    await state.set_state(Fsmbun.usern)
+
+
+@router.message(Fsmbun.usern)
+async def admin_next(mess: Message, state: FSMContext):
+    await state.update_data(usern=mess.text)
+    await mess.answer('Введите сообщение пользователю',reply_markup=cancel_markup)
+    await state.set_state(Fsmbun.mess_user)
+
+
+@router.message(Fsmbun.mess_user)
+async def admin_text(mess: Message, state: FSMContext):
+    await state.update_data(mess_user=mess.text)
+    await mess.answer('Нажмите отправить для блокировки или отмена', reply_markup=key_markup)
+    await state.set_state(Fsmbun.user_block)
+
+
+@router.callback_query(Fsmbun.user_block)
+async def admin_block(call: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    user_block = data['usern']
+    chat_id_bun = db_chat_id_user(user_block.replace('@', ''))
+    print(user_block)
+    await call.message.answer('Пользователь заблокирован!\n'
+                              ' Команды администратора:\n'
+                              ' /bun - удалить анкету\n'
+                              ' /block - заблокировать пользователя\n'
+                              ' /u - разблокировать пользователя\n'
+                              '/report - скачать отчет')
+    await bot.send_message(int(chat_id_bun), f"Сожалеем, но вы заблокированы админом, для разблокировки обратитесь: @vip_desire_chats\n"
+                                             f"Причина блокировки:\n"
+                                             f"\n{data['mess_user']}", reply_markup=main_keyboard)
+    db_bun(user_block)
+    conn.commit()
+    await state.clear()
+
+
+class FsmUnBun(StatesGroup):
+    usern = State()
+    mess_user = State()
+    user_block = State()
+
+@router.message(Command("u"))
+async def administrator(mess: Message, state: FSMContext):
+    await state.clear()
+    await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
+    await state.set_state(FsmUnBun.usern)
+
+
+@router.message(FsmUnBun.usern)
+async def admin_next(mess: Message, state: FSMContext):
+    await state.update_data(usern=mess.text)
+    await mess.answer('Введите сообщение пользователю',reply_markup=cancel_markup)
+    await state.set_state(FsmUnBun.mess_user)
+
+
+@router.message(FsmUnBun.mess_user)
+async def admin_text(mess: Message, state: FSMContext):
+    await state.update_data(mess_user=mess.text)
+    await mess.answer('Нажмите отправить для блокировки или отмена', reply_markup=key_markup)
+    await state.set_state(FsmUnBun.user_block)
+
+
+@router.callback_query(FsmUnBun.user_block)
+async def admin_block(call: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    user_block = data['usern']
+    chat_id_bun = db_chat_id_user(user_block.replace('@', ''))
+    print(user_block)
+    await call.message.answer('Пользователь разаблокирован!\n'
+                              ' Команды администратора:\n'
+                              ' /bun - удалить анкету\n'
+                              ' /block - заблокировать пользователя\n'
+                              ' /u - разблокировать пользователя\n'
+                              '/report - скачать отчет')
+    await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
+    db_rebun(user_block)
+    conn.commit()
+    await state.clear()
