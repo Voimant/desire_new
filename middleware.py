@@ -21,9 +21,8 @@ class AuthoMiddlware(BaseMiddleware):
             await event.answer(text='Пожалуйста создайте имя пользователя в вашем телеграмм аккаунте,'
                                     ' чтобы пользоваться нашим ботом знакомств\n'
                                     'Как сделайте жмите /start')
-        elif bun is not None:
-            await event.answer(text='Пожалуйста создайте имя пользователя в вашем телеграмм аккаунте,'
-                                    ' чтобы пользоваться нашим ботом знакомств\n'
-                                    'Как сделайте жмите /start')
+        elif bun is True:
+            await event.answer(text='Сожалеем, но вы заблокированы админом, для разблокировки обратитесь: @vip_desire_chats\n'
+                                    'После повторите команду /start')
         else:
             return await handler(event, data)
