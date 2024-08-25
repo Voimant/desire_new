@@ -206,7 +206,8 @@ async def ready_profile(call: types.CallbackQuery, state: FSMContext):
                          f'Возраст: {data["age"]}\n'
                          f'О себе: {data["text_profile"]}\n'
                          f'Кого ищу: {data["search_profile"]}\n'
-                         f'Предпочитаю возраст: 40+')
+                         f'Где ищу: {data["city"]}\n'
+                         f'Предпочитаю возраст: 18-40')
                 await bot.send_photo(5923668994, photo=y, caption=admin_1)
                 await state.clear()
             else:
@@ -226,6 +227,7 @@ async def ready_profile(call: types.CallbackQuery, state: FSMContext):
                          f'Возраст: {data["age"]}\n'
                          f'О себе: {data["text_profile"]}\n'
                          f'Кого ищу: {data["search_profile"]}\n'
+                         f'Где ищу: {data["city"]}\n'
                          f'Предпочитаю возраст: 40+')
                     await bot.send_photo(5923668994, photo=y, caption=admin_1)
                     await state.clear()
@@ -754,19 +756,17 @@ async def res(message: types.Message, state: FSMContext):
 
 
 @router.callback_query(Fsm1.resl)
-async def sends_all(callback: types.CallbackQuery, state: FSMContext):
-    if callback.data == 'send':
+async def sends_all(call: types.CallbackQuery, state: FSMContext):
+    if call.data == 'send':
         data = await state.get_data()
-        try:
-            for user_ids in list_id():
+        for user_ids in list_id():
+            try:
                 await bot.send_photo(user_ids, photo=data['image_al'], caption=data['message_all'])
-        except Exception as e:
-            get_log_errors(e)
-            print("Кто то заблочил бот")
-            pass
+            except Exception as e:
+                await call.message.answer(f'<<{e}>>  <<{user_ids}>>')
         await state.clear()
-    elif callback.data == 'cancel':
-        await bot.send_photo(callback.from_user.id, 'Возврат в главное меню', reply_markup=search_profile_markup)
+    elif call.data == 'cancel':
+        await bot.send_photo(call.from_user.id, 'Возврат в главное меню', reply_markup=search_profile_markup)
         await state.clear()
 
 
