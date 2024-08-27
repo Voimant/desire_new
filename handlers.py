@@ -23,7 +23,7 @@ from source.reports import get_log_errors
 import config
 
 bot = Bot(token=config.TOKEN)
-admin_list = [634112358, 6192099919, 5923668994, 423947942]
+ADMIN_LIST = [634112358, 6192099919, 5923668994, 423947942]
 router = Router()
 router.message.middleware(AuthoMiddlware())
 router.callback_query.middleware(AuthoMiddlware())
@@ -117,13 +117,14 @@ async def about_state(message: types.Message, state: FSMContext):
     try:
         photos = message.photo[-1].file_id
         print(photos)
-        await bot.send_photo(message.chat.id, photos)
+        await state.update_data(photo=photos)
+        await state.set_state(FSMprofile.text_profile)
     except TypeError:
-        await bot.send_message(message.chat.id, "Анкета будет без фотографии, потом сможете это изменить")
+        await bot.send_message(message.chat.id, "Фото в анкете обязательно! Нажмите на скрепку и прикрепите фото")
         photos = "AgACAgIAAxkBAAMkZSjzLcAlLnNyUjUHpZGt_PAsJK4AAu3RMRsyykhJqXzKkCaEr7ABAAMCAAN4AAMwBA"
-    await state.update_data(photo=photos)
+
     await bot.send_message(message.chat.id, 'Напишите немного о себе', reply_markup=next_back_kb_markup)
-    await state.set_state(FSMprofile.text_profile)
+    await state.set_state(FSMprofile.photo)
 
 
 @router.message(FSMprofile.text_profile)
@@ -773,7 +774,7 @@ async def sends_all(call: types.CallbackQuery, state: FSMContext):
 @router.message(Command('rt'))
 async def get_rt_report(mess: Message, state: FSMContext):
     await state.clear()
-    if mess.from_user.id in admin_list:
+    if mess.from_user.id in ADMIN_LIST:
         report()
         file = FSInputFile('report.xlsx')
         await mess.answer_document(file, caption='Анкеты скачаны')
@@ -791,11 +792,14 @@ class Fsmoder(StatesGroup):
 
 
 
-@router.message(Command("bun"))
+@router.message(Command("d"))
 async def administrator(mess: Message, state: FSMContext):
-    await state.clear()
-    await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
-    await state.set_state(Fsmoder.usern)
+    if mess.from_user.id in ADMIN_LIST:
+        await state.clear()
+        await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
+        await state.set_state(Fsmoder.usern)
+    else:
+        await mess.answer('Вы не являетесь администратором')
 
 
 @router.message(Fsmoder.usern)
@@ -835,11 +839,14 @@ class Fsmbun(StatesGroup):
     mess_user = State()
     user_block = State()
 
-@router.message(Command("block"))
+@router.message(Command("b"))
 async def administrator(mess: Message, state: FSMContext):
-    await state.clear()
-    await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
-    await state.set_state(Fsmbun.usern)
+    if mess.from_user.id in ADMIN_LIST:
+        await state.clear()
+        await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
+        await state.set_state(Fsmbun.usern)
+    else:
+        await mess.answer('Вы не являетесь администратором')
 
 
 @router.message(Fsmbun.usern)
@@ -864,8 +871,8 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     print(user_block)
     await call.message.answer('Пользователь заблокирован!\n'
                               ' Команды администратора:\n'
-                              ' /bun - удалить анкету\n'
-                              ' /block - заблокировать пользователя\n'
+                              ' /d - удалить анкету\n'
+                              ' /b - заблокировать пользователя\n'
                               ' /u - разблокировать пользователя\n'
                               '/report - скачать отчет')
     await bot.send_message(int(chat_id_bun), f"Сожалеем, но вы заблокированы админом, для разблокировки обратитесь: @vip_desire_chats\n"
@@ -883,9 +890,12 @@ class FsmUnBun(StatesGroup):
 
 @router.message(Command("u"))
 async def administrator(mess: Message, state: FSMContext):
-    await state.clear()
-    await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
-    await state.set_state(FsmUnBun.usern)
+    if mess.from_user.id in ADMIN_LIST:
+        await state.clear()
+        await mess.answer('Введите Юзернейм', reply_markup=cancel_markup)
+        await state.set_state(FsmUnBun.usern)
+    else:
+        await mess.answer('Вы не являетесь администратором')
 
 
 @router.message(FsmUnBun.usern)
