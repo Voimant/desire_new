@@ -821,8 +821,8 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     chat_id_bun = db_chat_id_user(user_block.replace('@', ''))
     await call.message.answer('Анкета гостя очищена!\n'
                               ' Команды администратора:\n'
-                              ' /bun - удалить анкету\n'
-                              ' /block - заблокировать пользователя\n'
+                              ' /d - удалить анкету\n'
+                              ' /b - заблокировать пользователя\n'
                               ' /u - разблокировать пользователя\n'
                               '/report - скачать отчет')
     await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
@@ -918,8 +918,8 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     print(user_block)
     await call.message.answer('Пользователь разаблокирован!\n'
                               ' Команды администратора:\n'
-                              ' /bun - удалить анкету\n'
-                              ' /block - заблокировать пользователя\n'
+                              ' /d - удалить анкету\n'
+                              ' /b - заблокировать пользователя\n'
                               ' /u - разблокировать пользователя\n'
                               '/report - скачать отчет')
     await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
