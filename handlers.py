@@ -719,7 +719,7 @@ class Fsm1(StatesGroup):
     ready = State()
 
 
-@router.message(Command('admin1213'))
+@router.message(Command('admin'))
 async def admin(message: types.Message):
     await message.answer('Введите пароль:', )
 
