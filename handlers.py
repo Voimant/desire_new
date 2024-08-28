@@ -772,12 +772,12 @@ async def sends_all(call: types.CallbackQuery, state: FSMContext):
 @router.message(Command('rt'))
 async def get_rt_report(mess: Message, state: FSMContext):
     await state.clear()
-    if mess.from_user.id in ADMIN_LIST:
+    if mess.from_user.id in [5923668994, 634112358]:
         report()
         file = FSInputFile('report.xlsx')
         await mess.answer_document(file, caption='Анкеты скачаны')
     else:
-        await mess.answer('Вы не являетесь администратором')
+        await mess.answer('У вас не хватает прав скачать отчет.')
 
 
 
@@ -933,4 +933,5 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     await bot.send_message(int(chat_id_bun), f"Администрацией бота сняты ограничения для вашего аккаунта, вы снова можете пользоваться ботом", reply_markup=main_keyboard)
     db_rebun(user_block.replace('@', ''))
     conn.commit()
+    await state.clear()
     await state.clear()
