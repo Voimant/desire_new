@@ -826,7 +826,7 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /u - разблокировать пользователя\n'
                               ' /rt - скачать отчет')
     text_admin = ('Сожалеем, но ваша анкета удалена администрацией бота, так как не соответсвует [правилам комьюнити](https://t.me/vip_desire_club/82)\n'
-                  'Наш бот поддержки: @vip_desire_bot\n'
+                  'Наш бот поддержки: @vip\_desire\_bot\n'
                   'Комментарий администрации:\n')
     await bot.send_message(int(chat_id_bun), f"{text_admin}"
                                              f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard, parse_mode='Markdown')
@@ -879,7 +879,7 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /rt - скачать отчет')
 
     text_admin = ('Сожалеем, но вы заблокированы за [нарушение правил](https://t.me/vip_desire_club/82)\n'
-                  'Наш бот поддержки: @vip_desire_bot\n'
+                  'Наш бот поддержки: @vip\_desire\_bot\n'
                   'Комментарий администрации:\n')
     await bot.send_message(int(chat_id_bun), f"{text_admin}\n"
                                              f"Причина блокировки:\n"
