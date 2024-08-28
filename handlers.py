@@ -23,7 +23,7 @@ from source.reports import get_log_errors
 import config
 
 bot = Bot(token=config.TOKEN)
-ADMIN_LIST = [634112358, 6192099919, 5923668994, 423947942]
+ADMIN_LIST = [634112358, 6192099919, 5923668994, 423947942, 497948297, 1985555563]
 router = Router()
 router.message.middleware(AuthoMiddlware())
 router.callback_query.middleware(AuthoMiddlware())
@@ -106,7 +106,7 @@ async def photo_state(message: types.Message, state: FSMContext):
         await state.update_data(name=message.text)
         await state.set_state(FSMprofile.photo)
         await bot.send_message(message.chat.id,
-                               'Выберете фото для вашей анкеты или напишите любое сообщение чтобы продолжить без фото',
+                               'Выберите фото для вашей анкеты. На фото должны быть вы. Не допускаются фото посторонних предметов и других людей',
                                reply_markup=next_back_kb_markup)
     else:
         await bot.send_message(message.chat.id, 'Введите имя буквами и цифрами не более 25 символов')
@@ -765,7 +765,7 @@ async def sends_all(call: types.CallbackQuery, state: FSMContext):
                 await call.message.answer(f'<<{e}>>  <<{user_ids}>>')
         await state.clear()
     elif call.data == 'cancel':
-        await bot.send_photo(call.from_user.id, 'Возврат в главное меню', reply_markup=search_profile_markup)
+        await bot.send_message(call.from_user.id, 'Возврат в главное меню', reply_markup=search_profile_markup)
         await state.clear()
 
 
@@ -824,8 +824,12 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /d - удалить анкету\n'
                               ' /b - заблокировать пользователя\n'
                               ' /u - разблокировать пользователя\n'
-                              '/report - скачать отчет')
-    await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
+                              ' /rt - скачать отчет')
+    text_admin = ('Сожалеем, но ваша анкета удалена администрацией бота, так как не соответсвует [правилам комьюнити](https://t.me/vip_desire_club/82)\n'
+                  'Наш бот поддержки: @vip_desire_bot\n'
+                  'Комментарий администрации:\n')
+    await bot.send_message(int(chat_id_bun), f"{text_admin}"
+                                             f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard, parse_mode='Markdown')
     delete_user(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
@@ -872,10 +876,14 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /d - удалить анкету\n'
                               ' /b - заблокировать пользователя\n'
                               ' /u - разблокировать пользователя\n'
-                              '/report - скачать отчет')
-    await bot.send_message(int(chat_id_bun), f"Сожалеем, но вы заблокированы админом, для разблокировки обратитесь: @vip_desire_chats\n"
+                              ' /rt - скачать отчет')
+
+    text_admin = ('Сожалеем, но вы заблокированы за [нарушение правил](https://t.me/vip_desire_club/82)\n'
+                  'Наш бот поддержки: @vip_desire_bot\n'
+                  'Комментарий администрации:\n')
+    await bot.send_message(int(chat_id_bun), f"{text_admin}\n"
                                              f"Причина блокировки:\n"
-                                             f"\n{data['mess_user']}", reply_markup=main_keyboard)
+                                             f"\n{data['mess_user']}", reply_markup=main_keyboard, parse_mode='Markdown')
     db_bun(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
@@ -921,8 +929,8 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /d - удалить анкету\n'
                               ' /b - заблокировать пользователя\n'
                               ' /u - разблокировать пользователя\n'
-                              '/report - скачать отчет')
-    await bot.send_message(int(chat_id_bun), f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard)
+                              ' /rt - скачать отчет')
+    await bot.send_message(int(chat_id_bun), f"Администрацией бота сняты ограничения для вашего аккаунта, вы снова можете пользоваться ботом", reply_markup=main_keyboard)
     db_rebun(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
