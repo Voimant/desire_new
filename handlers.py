@@ -119,7 +119,7 @@ async def about_state(message: types.Message, state: FSMContext):
         print(photos)
         await state.update_data(photo=photos)
         await state.set_state(FSMprofile.text_profile)
-        await bot.send_message(message.chat.id, 'Напишите немного о себе', reply_markup=next_back_kb_markup)
+        await bot.send_message(message.chat.id, 'Заполните о себе буквами и цифрами, так же описание не может быть более 1024 символа', reply_markup=next_back_kb_markup)
     except TypeError:
         await bot.send_message(message.chat.id, "Фото в анкете обязательно! Нажмите на скрепку и прикрепите фото", reply_markup=next_back_kb_markup)
         await state.set_state(FSMprofile.photo)
