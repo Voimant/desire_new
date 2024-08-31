@@ -608,7 +608,7 @@ async def edit_about(call: types.callback_query, state: FSMContext):
 
 @router.message(Fsmabout.editabout)
 async def try_about(message: types.Message, state: FSMContext):
-    if message.text != None and len(message.text) < 200:
+    if message.text is not None and len(message.text) < 1024:
         await state.update_data(editabout=message.text)
         data = await state.get_data()
         us_name = message.from_user.username
@@ -618,7 +618,7 @@ async def try_about(message: types.Message, state: FSMContext):
         await bot.send_message(message.chat.id, 'Описание профиля именено', reply_markup=edit_pro_markup)
     else:
         await state.set_state(Fsmabout.editabout)
-        await bot.send_message(message.chat.id, "Заполните о себе буквами и цифрами")
+        await bot.send_message(message.chat.id, "Заполните о себе буквами и цифрами, так же описание не может быть более 1024 символа")
 
 
 class Fsmperf(StatesGroup):
