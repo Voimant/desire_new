@@ -758,11 +758,13 @@ async def res(message: types.Message, state: FSMContext):
 async def sends_all(call: types.CallbackQuery, state: FSMContext):
     if call.data == 'send':
         data = await state.get_data()
+        x = 0
         for user_ids in list_id():
             try:
                 await bot.send_photo(user_ids, photo=data['image_al'], caption=data['message_all'])
             except Exception as e:
-                await call.message.answer(f'<<{e}>>  <<{user_ids}>>')
+                x = x + 1
+        await call.message.answer(f'Не отправлено {str(x)} Пользователям')
         await state.clear()
     elif call.data == 'cancel':
         await bot.send_message(call.from_user.id, 'Возврат в главное меню', reply_markup=search_profile_markup)
