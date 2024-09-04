@@ -29,6 +29,8 @@ router.message.middleware(AuthoMiddlware())
 router.callback_query.middleware(AuthoMiddlware())
 
 
+STOP_WORDS = ['Помощь', 'Перейти в наш чат']
+
 class FSMprofile(StatesGroup):
     sex = State()
     name = State()
@@ -102,7 +104,7 @@ async def name_state(call: types.CallbackQuery, state: FSMContext):
 
 @router.message(FSMprofile.name)
 async def photo_state(message: types.Message, state: FSMContext):
-    if message.text != None and len(message.text) < 25:
+    if message.text is not None and len(message.text) < 25 and message.text not in STOP_WORDS:
         await state.update_data(name=message.text)
         await state.set_state(FSMprofile.photo)
         await bot.send_message(message.chat.id,
@@ -127,15 +129,19 @@ async def about_state(message: types.Message, state: FSMContext):
 
 @router.message(FSMprofile.text_profile)
 async def age_state(message: types.Message, state: FSMContext):
-    await state.update_data(text_profile=message.text)
-    await bot.send_message(message.chat.id, 'Укажите ваш возраст', reply_markup=next_back_kb_markup)
-    await state.set_state(FSMprofile.age)
+    if message.text not in STOP_WORDS:
+        await state.update_data(text_profile=message.text)
+        await bot.send_message(message.chat.id, 'Укажите ваш возраст', reply_markup=next_back_kb_markup)
+        await state.set_state(FSMprofile.age)
+    else:
+        await state.set_state(FSMprofile.text_profile)
+        await message.answer('Напишите о себе', reply_markup=next_back_kb_markup)
 
 
 @router.message(FSMprofile.age)
 async def search_state(message: types.Message, state: FSMContext):
     try:
-        if message.text == int or int(message.text) > 18 and int(message.text) < 100:
+        if message.text == int or int(message.text) > 18 and int(message.text) < 100 and message.text not in STOP_WORDS:
             await state.update_data(age=message.text)
             await bot.send_message(message.chat.id, 'Кого будем для вас искать?', reply_markup=start_profile_markup_1)
             await state.set_state(FSMprofile.search_profile)
@@ -284,7 +290,7 @@ async def cancel(call: types.CallbackQuery, state: FSMContext):
 
 @router.callback_query(F.data == 'go')
 async def new_profile(call: types.callback_query):
-    """начало поиска """
+    """Начало поиска """
     username = call.from_user.username
     result_search = search(username)
     gender = result_search[0]['gender']
