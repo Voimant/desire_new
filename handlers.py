@@ -503,7 +503,7 @@ async def edit_name(call: types.callback_query, state: FSMContext):
 
 @router.message(Fsmeditname.fname)
 async def try_name(message: types.Message, state: FSMContext):
-    if message.text != None and len(message.text) < 25:
+    if message.text != None and len(message.text) < 25 and message.text not in STOP_WORDS:
         print(message.text)
         await state.update_data(fname=message.text)
         data = await state.get_data()
@@ -614,7 +614,7 @@ async def edit_about(call: types.callback_query, state: FSMContext):
 
 @router.message(Fsmabout.editabout)
 async def try_about(message: types.Message, state: FSMContext):
-    if message.text is not None and len(message.text) < 1024:
+    if message.text is not None and len(message.text) < 1024 and message.text not in STOP_WORDS:
         await state.update_data(editabout=message.text)
         data = await state.get_data()
         us_name = message.from_user.username
