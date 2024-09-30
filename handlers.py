@@ -624,7 +624,7 @@ async def try_about(message: types.Message, state: FSMContext):
         await bot.send_message(message.chat.id, 'Описание профиля именено', reply_markup=edit_pro_markup)
     else:
         await state.set_state(Fsmabout.editabout)
-        await bot.send_message(message.chat.id, "Заполните о себе буквами и цифрами, так же описание не может быть более 1024 символа")
+        await bot.send_message(message.chat.id, "Заполните информацию о себе и о том что вы ищите (описание не может быть более 1024 символов)")
 
 
 class Fsmperf(StatesGroup):
@@ -762,12 +762,18 @@ async def res(message: types.Message, state: FSMContext):
 
 @router.callback_query(Fsm1.resl)
 async def sends_all(call: types.CallbackQuery, state: FSMContext):
+    lim = 0
     if call.data == 'send':
         data = await state.get_data()
         x = 0
         for user_ids in list_id():
             try:
-                await bot.send_photo(user_ids, photo=data['image_al'], caption=data['message_all'])
+                if lim <= 10:
+                    await bot.send_photo(user_ids, photo=data['image_al'], caption=data['message_all'])
+                    lim = lim + 1
+                else:
+                    lim = 0
+                    await asyncio.sleep(2)
             except Exception as e:
                 x = x + 1
         await call.message.answer(f'Не отправлено {str(x)} Пользователям')
