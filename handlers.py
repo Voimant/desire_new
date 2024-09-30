@@ -768,7 +768,7 @@ async def sends_all(call: types.CallbackQuery, state: FSMContext):
         x = 0
         for user_ids in list_id():
             try:
-                if lim <= 10:
+                if lim >= 10:
                     await bot.send_photo(user_ids, photo=data['image_al'], caption=data['message_all'])
                     lim = lim + 1
                 else:
