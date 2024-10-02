@@ -328,9 +328,9 @@ async def new_profile(call: types.callback_query):
     result = search3(age, pref, gender)
     # print(result)
     try:
-        x = (f'Имя: {result[count]["nick_name"]} {result[count]["gender"]}\n'
+        x = f'Имя: {result[count]["nick_name"]} {result[count]["gender"]}\n'
         f'Возраст: {result[count]["age"]}\n'
-        f'О себе: {result[count]["about_me"]}')
+        f'О себе: {result[count]["about_me"]}'
         try:
             await bot.send_photo(call.from_user.id, result[count]['photo'], caption=x,
                                  reply_markup=search_profile_markup)
