@@ -35,6 +35,14 @@ search_begin = [[
     InlineKeyboardButton(text="Начать поиск❤️", callback_data='go')
 ]]
 
+
+search_go = [[
+    InlineKeyboardButton(text="Продолжить поиск❤️", callback_data='go')
+]]
+
+new_go = InlineKeyboardMarkup(inline_keyboard=search_go)
+
+
 city_button = [
     [InlineKeyboardButton(text='Москва', callback_data='Москва')],
     [InlineKeyboardButton(text='Санкт-Петербург', callback_data='Санкт-Петербург')],
@@ -105,3 +113,8 @@ key_button = [
 ]
 
 key_markup = InlineKeyboardMarkup(inline_keyboard=key_button)
+
+new_start_button = [[InlineKeyboardButton(text='Ознакомиться с правилами', url='https://t.me/vip_desire_club/82')],
+                    [InlineKeyboardButton(text='Начать регистрацию', callback_data='reg')]]
+
+new_start_markup = InlineKeyboardMarkup(inline_keyboard=new_start_button)

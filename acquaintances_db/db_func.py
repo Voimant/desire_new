@@ -144,6 +144,7 @@ def delete_user(user_name: str):
     with conn.cursor() as cur:
         cur.execute("""
                     DELETE FROM users WHERE user_name = %s;""", (user_name,))
+        conn.commit()
         return 'Пользователь удалён из базы данных'
 
 
@@ -212,7 +213,7 @@ def search3(age: int, preferences: str, gender: str):
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute(
             """SELECT user_name, nick_name, gender, age, about_me, preferences, city, photo, chat_id FROM users WHERE age BETWEEN (%s - 2) AND (%s + 19)
-            AND gender = %s AND preferences = %s""", (age, age, preferences, gender))
+            AND gender = %s AND preferences = %s AND bun is not true""", (age, age, preferences, gender))
         res = cur.fetchall()
         res_list = []
         for row in res:

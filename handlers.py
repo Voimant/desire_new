@@ -4,10 +4,12 @@ import time
 from aiogram import types, Dispatcher, Router, F, Bot
 from aiogram.exceptions import TelegramForbiddenError
 from aiogram.filters import CommandStart, Command
+from aiogram.fsm.middleware import FSMContextMiddleware
 from aiogram.types import Message, CallbackQuery
 from keyboards import main_keyboard, profile_markup, start_profile_markup, next_back_kb_markup, search_profile_markup, \
     city_markup, again_markup, start_profile_markup_1, edit_profile_markup, edit_pro_markup, edit_pro_cancel, \
-    edit_pro_cancel_markup, age_markup, admin_markup, admin_1_markup, cancel_markup, key_markup
+    edit_pro_cancel_markup, age_markup, admin_markup, admin_1_markup, cancel_markup, key_markup, new_go, \
+    new_start_markup
 from keyboards import search_begin_markup
 from aiogram.types import FSInputFile, BufferedInputFile
 from pprint import pprint
@@ -50,18 +52,29 @@ async def get_cancel(call: CallbackQuery, state: FSMContext):
 
 
 @router.message(Command('start'))
-async def cmd_start(message: types.Message, state: FSMContext):
+async def cmd_start(mess: types.Message, state: FSMContext):
     await state.clear()
-    us_name = message.from_user.username
-    if search_user(us_name) == None:
-        await bot.send_message(message.chat.id, 'Привет', reply_markup=main_keyboard)
-        await bot.send_message(message.chat.id, 'Заполни анкету для продолжения', reply_markup=main_keyboard)
-        await bot.send_message(message.chat.id, 'Кто вы?', reply_markup=start_profile_markup)
+    us_name = mess.from_user.username
+    if search_user(us_name) is None:
+        await bot.send_message(mess.chat.id, 'Привет', reply_markup=main_keyboard)
+        await bot.send_message(mess.chat.id, 'Ознакомься с правилами и заполни анкету для продолжения', reply_markup=new_start_markup)
+    else:
+        await state.clear()
+        await bot.send_message(mess.chat.id, 'Бот обновлен', reply_markup=main_keyboard)
+        await bot.send_message(mess.chat.id, 'Начнем поиск?', reply_markup=search_begin_markup)
+
+
+@router.callback_query(F.data == 'reg')
+async def cmd_start(call: types.CallbackQuery, state: FSMContext):
+    await state.clear()
+    us_name = call.from_user.username
+    if search_user(us_name) is None:
+        await bot.send_message(call.from_user.id, 'Кто вы?', reply_markup=start_profile_markup)
         await state.set_state(FSMprofile.sex)
     else:
         await state.clear()
-        await bot.send_message(message.chat.id, 'Бот обновлен', reply_markup=main_keyboard)
-        await bot.send_message(message.chat.id, 'Начнем поиск?', reply_markup=search_begin_markup)
+        await bot.send_message(call.from_user.id, 'Бот обновлен', reply_markup=main_keyboard)
+        await bot.send_message(call.from_user.id, 'Начнем поиск?', reply_markup=search_begin_markup)
 
 
 @router.message(Command('my_profile'))
@@ -381,9 +394,9 @@ async def like_do(call: types.callback_query):
                                 f'Возраст: {result[count - 1]["age"]}\n'
                                 f'О себе: {result[count - 1]["about_me"]}')
 
-                await bot.send_photo(result[count - 1]['chat_id'], x[0]['photo'], caption=y)
+                await bot.send_photo(result[count - 1]['chat_id'], x[0]['photo'], caption=y, reply_markup=new_go)
                 await bot.send_photo(call.from_user.id, photo=result[count - 1]["photo"], caption=profile_like,
-                                     reply_markup=main_keyboard)
+                                     reply_markup=new_go)
             else:
                 print('елсе')
                 print(result)
@@ -393,7 +406,7 @@ async def like_do(call: types.callback_query):
                                 f'Возраст: {result[0]["age"]}\n'
                                 f'О себе: {result[0]["about_me"]}')
 
-                await bot.send_photo(result[0]['chat_id'], x[0]['photo'], caption=y)
+                await bot.send_photo(result[0]['chat_id'], x[0]['photo'], caption=y, reply_markup=new_go)
                 await bot.send_photo(call.from_user.id, photo=result[0]["photo"], caption=profile_like,
                                      reply_markup=main_keyboard)
             # print(list_liked_users(like_user_name))
@@ -503,7 +516,7 @@ async def edit_name(call: types.callback_query, state: FSMContext):
 
 @router.message(Fsmeditname.fname)
 async def try_name(message: types.Message, state: FSMContext):
-    if message.text != None and len(message.text) < 25 and message.text not in STOP_WORDS:
+    if message.text is not None and len(message.text) < 25 and message.text not in STOP_WORDS:
         print(message.text)
         await state.update_data(fname=message.text)
         data = await state.get_data()
