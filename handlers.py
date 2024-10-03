@@ -2,7 +2,6 @@ import asyncio
 import time
 
 from aiogram import types, Dispatcher, Router, F, Bot
-from aiogram.exceptions import TelegramForbiddenError
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.middleware import FSMContextMiddleware
 from aiogram.types import Message, CallbackQuery
