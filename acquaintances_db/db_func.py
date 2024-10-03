@@ -159,6 +159,7 @@ def db_chat_id_user(user_name: str):
         ret = cur.fetchone()
         for row in ret:
             return row
+print(db_chat_id_user('Voimant'))
 
 #
 
@@ -627,4 +628,4 @@ def db_bun_users(user_name: str):
             print(e)
             return False
 
-print(db_bun_users('VIP_DESIRE_1'))
+#print(db_bun_users('VIP_DESIRE_1'))

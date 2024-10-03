@@ -23,6 +23,7 @@ from acquaintances_db.db import conn
 from middleware import AuthoMiddlware
 from source.reports import get_log_errors
 import config
+from aiogram.exceptions import TelegramForbiddenError
 
 bot = Bot(token=config.TOKEN)
 ADMIN_LIST = [634112358, 6192099919, 5923668994, 423947942, 497948297, 1985555563]
@@ -855,10 +856,13 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     text_admin = ('Сожалеем, но ваша анкета удалена администрацией бота, так как не соответсвует [правилам комьюнити](https://t.me/vip_desire_club/82)\n'
                   'Наш бот поддержки: @vip\_desire\_bot\n'
                   'Комментарий администрации:\n')
-    await bot.send_message(int(chat_id_bun), f"{text_admin}"
-                                             f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard, parse_mode='Markdown')
     delete_user(user_block.replace('@', ''))
     conn.commit()
+    try:
+        await bot.send_message(int(chat_id_bun), f"{text_admin}"
+                                                 f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard, parse_mode='Markdown')
+    except TelegramForbiddenError:
+        pass
     await state.clear()
 
 
@@ -908,9 +912,12 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     text_admin = ('Сожалеем, но вы заблокированы за [нарушение правил](https://t.me/vip_desire_club/82)\n'
                   'Наш бот поддержки: @vip\_desire\_bot\n'
                   'Комментарий администрации:\n')
-    await bot.send_message(int(chat_id_bun), f"{text_admin}\n"
-                                             f"Причина блокировки:\n"
-                                             f"\n{data['mess_user']}", reply_markup=main_keyboard, parse_mode='Markdown')
+    try:
+        await bot.send_message(int(chat_id_bun), f"{text_admin}\n"
+                                                 f"Причина блокировки:\n"
+                                                 f"\n{data['mess_user']}", reply_markup=main_keyboard, parse_mode='Markdown')
+    except TelegramForbiddenError:
+        pass
     db_bun(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
@@ -957,7 +964,10 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
                               ' /b - заблокировать пользователя\n'
                               ' /u - разблокировать пользователя\n'
                               ' /rt - скачать отчет')
-    await bot.send_message(int(chat_id_bun), f"Администрацией бота сняты ограничения для вашего аккаунта, вы снова можете пользоваться ботом", reply_markup=main_keyboard)
+    try:
+        await bot.send_message(int(chat_id_bun), f"Администрацией бота сняты ограничения для вашего аккаунта, вы снова можете пользоваться ботом", reply_markup=main_keyboard)
+    except TelegramForbiddenError:
+        pass
     db_rebun(user_block.replace('@', ''))
     conn.commit()
     await state.clear()
