@@ -157,9 +157,12 @@ def db_chat_id_user(user_name: str):
         select_query = "select chat_id from users where user_name = '{}'".format(user_name)
         cur.execute(select_query)
         ret = cur.fetchone()
-        for row in ret:
-            return row
-print(db_chat_id_user('Voimant'))
+        if ret is not None:
+            for row in ret:
+                return row
+        else:
+            return None
+ #print(db_chat_id_user('Voimant'))
 
 #
 

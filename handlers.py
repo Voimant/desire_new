@@ -846,22 +846,25 @@ async def admin_block(call: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     user_block = data['usern']
     chat_id_bun = db_chat_id_user(user_block.replace('@', ''))
-    await call.message.answer('Анкета гостя очищена!\n'
-                              ' Команды администратора:\n'
-                              ' /d - удалить анкету\n'
-                              ' /b - заблокировать пользователя\n'
-                              ' /u - разблокировать пользователя\n'
-                              ' /rt - скачать отчет')
-    text_admin = ('Сожалеем, но ваша анкета удалена администрацией бота, так как не соответсвует [правилам комьюнити](https://t.me/vip_desire_club/82)\n'
-                  'Наш бот поддержки: @vip\_desire\_bot\n'
-                  'Комментарий администрации:\n')
-    delete_user(user_block.replace('@', ''))
-    conn.commit()
-    try:
-        await bot.send_message(int(chat_id_bun), f"{text_admin}"
-                                                 f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard, parse_mode='Markdown')
-    except TelegramForbiddenError:
-        pass
+    if chat_id_bun is not None:
+        await call.message.answer('Анкета гостя очищена!\n'
+                                  ' Команды администратора:\n'
+                                  ' /d - удалить анкету\n'
+                                  ' /b - заблокировать пользователя\n'
+                                  ' /u - разблокировать пользователя\n'
+                                  ' /rt - скачать отчет')
+        text_admin = ('Сожалеем, но ваша анкета удалена администрацией бота, так как не соответсвует [правилам комьюнити](https://t.me/vip_desire_club/82)\n'
+                      'Наш бот поддержки: @vip\_desire\_bot\n'
+                      'Комментарий администрации:\n')
+        delete_user(user_block.replace('@', ''))
+        conn.commit()
+        try:
+            await bot.send_message(int(chat_id_bun), f"{text_admin}"
+                                                     f"{data['mess_user']}\n /start что бы начать заново", reply_markup=main_keyboard, parse_mode='Markdown')
+        except TelegramForbiddenError:
+            pass
+    else:
+        await call.message.answer('Пользователь с таким юзернейм уже очищен')
     await state.clear()
 
 
