@@ -25,7 +25,7 @@ import config
 from aiogram.exceptions import TelegramForbiddenError
 
 bot = Bot(token=config.TOKEN)
-ADMIN_LIST = [634112358, 6192099919, 5923668994, 423947942, 497948297, 1985555563]
+ADMIN_LIST = [634112358, 6192099919, 5923668994, 423947942, 497948297, 1985555563, 7241936347]
 router = Router()
 router.message.middleware(AuthoMiddlware())
 router.callback_query.middleware(AuthoMiddlware())
@@ -227,6 +227,7 @@ async def ready_profile(call: types.CallbackQuery, state: FSMContext):
                          f'Где ищу: {data["city"]}\n'
                          f'Предпочитаю возраст: 18-40')
                 await bot.send_photo(5923668994, photo=y, caption=admin_1)
+                await bot.send_photo(7241936347, photo=y, caption=admin_1)
                 await state.clear()
             else:
                 if int(data["age_seach_s"]) == 40:
@@ -248,6 +249,7 @@ async def ready_profile(call: types.CallbackQuery, state: FSMContext):
                          f'Где ищу: {data["city"]}\n'
                          f'Предпочитаю возраст: 40+')
                     await bot.send_photo(5923668994, photo=y, caption=admin_1)
+                    await bot.send_photo(7241936347, photo=y, caption=admin_1)
                     await state.clear()
         except ValueError:
             await bot.send_message(call.from_user.id, "Выберете возраст который будем искать", reply_markup=age_markup)
