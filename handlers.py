@@ -692,7 +692,7 @@ async def help1(message: types.Message):
     x = (f'Воспользуйтесь следующими командами если произошла ошибка:\n'
          f'/start - обновление бота\n'
          f'/my_profile - для редактирования анкеты\n'
-         f'Если не можете справиться сами, напишите нам сюда: @vip_desire_bot')
+         f'Если не можете справиться сами, напишите нам сюда: @Supdesire_bot')
     await bot.send_message(message.chat.id, x)
 
 
